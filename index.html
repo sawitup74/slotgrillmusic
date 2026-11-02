@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slot Grill Music: original songs for your listening enjoyment</title>
+<meta name="description" content="Original Slot Grill songs, created for your listening enjoyment. Play them right here, no streaming subscription needed.">
+<meta property="og:title" content="Slot Grill Music"><meta property="og:image" content="https://slotgrillmusic.com/cover.jpg">
+<meta name="theme-color" content="#120a06">
+<style>
+:root{--bg:#0e0805;--card:#1a110b;--line:#2e1d12;--ember:#ff6a1a;--gold:#ffb347;--txt:#f6ece4;--mut:#bfa898}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(120% 60% at 50% -10%,#3a1606 0,var(--bg) 60%) fixed;color:var(--txt);padding-bottom:110px}
+a{color:var(--gold)}a:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+nav{position:sticky;top:0;z-index:5;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:10px;background:#0e0805e6;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav a{color:var(--txt);text-decoration:none;padding:6px 12px;border-radius:99px;font-size:.92rem}nav a:hover{background:var(--line)}
+main{max-width:760px;margin:auto;padding:0 18px}section{padding:42px 0 8px;scroll-margin-top:60px}
+header{text-align:center;padding:42px 0 10px}header img{width:180px;height:180px;object-fit:cover;border-radius:18px;box-shadow:0 0 60px #ff6a1a55}
+h1{font-size:clamp(2rem,7vw,3.2rem);margin:18px 0 4px;background:linear-gradient(90deg,var(--gold),var(--ember));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{color:var(--gold);margin:0 0 12px}.mut{color:var(--mut)}
+.btn{display:inline-block;background:linear-gradient(90deg,var(--ember),#d93d00);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:99px;border:0;cursor:pointer}
+ol{list-style:none;padding:0;margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--card)}
+ol li button{all:unset;box-sizing:border-box;display:flex;width:100%;gap:12px;align-items:center;padding:14px 16px;cursor:pointer;border-bottom:1px solid var(--line)}
+ol li:last-child button{border:0}ol li button:hover{background:#24170e}ol li button[aria-current=true]{background:#2c1709;color:var(--gold)}
+.n{width:1.6em;color:var(--mut);text-align:right}.t{flex:1}.d{color:var(--mut);font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:10px}.chips a{background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;padding:10px 16px;border-radius:99px}.chips a:hover{border-color:var(--ember)}
+#player{position:fixed;left:0;right:0;bottom:0;z-index:9;background:#140c07f2;backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 14px}
+.pi{max-width:760px;margin:auto;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.ctl{display:flex;gap:6px}.ctl button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:18px;cursor:pointer}
+.ctl #play{background:var(--ember);color:#fff;border:0}
+#now{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+#seek{width:100%;accent-color:var(--ember)}.tm{font-size:.8rem;color:var(--mut);font-variant-numeric:tabular-nums}
+footer{text-align:center;padding:40px 18px;color:var(--mut);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<nav aria-label="Sections"><a href="#listen">Listen</a><a href="#about">About</a><a href="#social">Social</a><a href="#streaming" id="navStream" hidden>Streaming</a><a href="#shop">Shop</a></nav>
+<main>
+<header><img src="cover.jpg" alt="Slot Grill Music cover art" width="180" height="180"><h1>Slot Grill Music</h1><p class="mut">Original Slot Grill songs, created for your listening enjoyment.</p></header>
+<section id="listen" aria-labelledby="hl"><h2 id="hl">Listen</h2><p class="mut">Play right here, no streaming subscription needed. Tracks play one after another, and the music keeps going while you scroll or switch tabs.</p><ol id="list"></ol><p id="empty" class="mut" hidden>New songs are coming soon. Check back shortly.</p></section>
+<section id="about"><h2>About</h2><p>These songs are made for Slot Grill, the carbon-steel flat pack grill. You'll hear some of them in Slot Grill videos on social media. Turn them up while the coals get going.</p></section>
+<section id="social"><h2>Follow Slot Grill</h2><div class="chips" id="soc"></div></section>
+<section id="streaming" hidden><h2>Listen on your streaming service</h2><div class="chips" id="str"></div></section>
+<section id="shop" style="text-align:center"><h2>Get your Slot Grill</h2><p class="mut">The carbon-steel flat pack grill that sets up in seconds.</p><a class="btn" href="https://slotgrill.com" target="_blank" rel="noopener">Get your Slot Grill</a></section>
+<footer><p id="visitor"></p><p>© <span id="yr"></span> <a href="https://slotgrill.com" target="_blank" rel="noopener">Slot Grill</a>. All songs original.</p></footer>
+</main>
+<div id="player" role="region" aria-label="Audio player"><div class="pi">
+<div class="ctl"><button id="prev" aria-label="Previous track">⏮</button><button id="play" aria-label="Play">▶</button><button id="next" aria-label="Next track">⏭</button></div>
+<div><div id="now">Pick a song</div><input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek"></div>
+<div class="tm"><span id="cur">0:00</span>/<span id="dur">0:00</span></div></div></div>
+<audio id="a" preload="none"></audio>
+<script>
+(function(){
+var A=document.getElementById('a'),list=document.getElementById('list'),T=[],i=-1,$=function(x){return document.getElementById(x)};
+$('yr').textContent=new Date().getFullYear();
+function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function ext(a){a.target='_blank';a.rel='noopener'}
+function chip(box,x){var a=document.createElement('a');a.href=x.url;a.textContent=x.name;ext(a);box.appendChild(a)}
+fetch('config.json').then(function(r){return r.json()}).then(function(c){
+ (c.social||[]).forEach(function(x){chip($('soc'),x)});
+ var s=(c.streaming||[]).filter(function(x){return x.enabled&&x.url});
+ if(s.length){s.forEach(function(x){chip($('str'),x)});$('streaming').hidden=false;$('navStream').hidden=false}
+});
+fetch('tracks.json').then(function(r){return r.json()}).then(function(d){
+ T=(d.tracks||[]).filter(function(t){return t.enabled!==false});
+ if(!T.length){$('empty').hidden=false;list.hidden=true;return}
+ T.forEach(function(t,k){var li=document.createElement('li'),b=document.createElement('button');
+  b.innerHTML='<span class="n">'+(k+1)+'</span><span class="t"></span><span class="d">'+(t.duration?fmt(t.duration):'')+'</span>';
+  b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};li.appendChild(b);list.appendChild(li)});
+});
+function load(k,play){if(!T.length)return;i=(k+T.length)%T.length;var t=T[i];A.src=t.file;$('now').textContent=t.title;
+ [].forEach.call(list.querySelectorAll('button'),function(b,j){b.setAttribute('aria-current',j===i)});
+ if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:'Slot Grill',album:'Slot Grill Music',artwork:[{src:'cover.jpg',sizes:'600x600',type:'image/jpeg'}]})}
+ document.title=t.title+' · Slot Grill Music';
+ if(play)A.play().catch(function(){})}
+function toggle(){if(i<0)return load(0,true);A.paused?A.play().catch(function(){}):A.pause()}
+$('play').onclick=toggle;$('next').onclick=function(){load(i+1,true)};$('prev').onclick=function(){A.currentTime>3?A.currentTime=0:load(i-1,true)};
+A.onplay=function(){$('play').textContent='⏸';$('play').setAttribute('aria-label','Pause')};
+A.onpause=function(){$('play').textContent='▶';$('play').setAttribute('aria-label','Play')};
+A.onended=function(){load(i+1,true)};
+A.ontimeupdate=function(){$('cur').textContent=fmt(A.currentTime);if(A.duration){$('seek').value=A.currentTime/A.duration*100;$('dur').textContent=fmt(A.duration)}
+ if('mediaSession' in navigator&&A.duration&&navigator.mediaSession.setPositionState){try{navigator.mediaSession.setPositionState({duration:A.duration,position:A.currentTime,playbackRate:1})}catch(e){}}};
+$('seek').oninput=function(){if(A.duration)A.currentTime=this.value/100*A.duration};
+if('mediaSession' in navigator){var m=navigator.mediaSession;
+ m.setActionHandler('play',function(){toggle()});m.setActionHandler('pause',function(){A.pause()});
+ m.setActionHandler('previoustrack',function(){load(i-1,true)});m.setActionHandler('nexttrack',function(){load(i+1,true)});
+ try{m.setActionHandler('seekto',function(e){A.currentTime=e.seekTime})}catch(e){}}
+// visitor counter (same pattern as the guide sites)
+var el=$('visitor'),url='https://slotgrillmusic.goatcounter.com/counter/%2F.json';
+function digits(v){return parseInt(String(v==null?'':v).replace(/\D/g,''),10)||0}
+function attempt(n){fetch(url).then(function(r){return r.ok?r.json():{}}).then(function(j){var c=digits(j.count);if(!c)throw 0;el.textContent='You are visitor #'+c+' to land here'})
+ .catch(function(){if(n<2)setTimeout(function(){attempt(n+1)},1200);else el.textContent='Thanks for listening'})}
+setTimeout(function(){attempt(0)},1500);
+})();
+</script>
+<script data-goatcounter="https://slotgrillmusic.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body></html>

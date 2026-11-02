@@ -1,0 +1,18 @@
+{
+  "streaming": [
+    {"name": "Spotify", "url": "", "enabled": false},
+    {"name": "Apple Music", "url": "", "enabled": false},
+    {"name": "YouTube Music", "url": "", "enabled": false},
+    {"name": "Amazon Music", "url": "", "enabled": false}
+  ],
+  "social": [
+    {"name": "Facebook", "url": "https://www.facebook.com/slotgrill"},
+    {"name": "Instagram", "url": "https://www.instagram.com/slotgrill/"},
+    {"name": "TikTok", "url": "https://www.tiktok.com/@slotgrill"},
+    {"name": "YouTube", "url": "https://www.youtube.com/@SlotGrill"},
+    {"name": "X", "url": "https://x.com/SlotGrill"},
+    {"name": "Threads", "url": "https://www.threads.com/@slotgrill"},
+    {"name": "Pinterest", "url": "https://www.pinterest.com/slotgrill/"},
+    {"name": "Rumble", "url": "https://rumble.com/c/SlotGrill"}
+  ]
+}

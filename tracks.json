@@ -1,0 +1,9 @@
+{
+  "tracks": [
+    {"title": "Juicy Juicy on the Slot Grill", "file": "audio/juicy-juicy-on-the-slot-grill.mp3", "duration": 59, "enabled": true},
+    {"title": "The Slot Grill King 2", "file": "audio/slot-grill-king-2.mp3", "duration": 153, "enabled": true},
+    {"title": "And my Slot Grill (reggae)", "file": "audio/and-my-slot-grill-reggae.mp3", "duration": 304, "enabled": true},
+    {"title": "relaxing song for video", "file": "audio/relaxing-song-for-video.mp3", "duration": 199, "enabled": true},
+    {"title": "Weenies!", "file": "audio/weenies.mp3", "duration": 164, "enabled": false, "note": "off by default: suggestive lyrics, Keith to approve"}
+  ]
+}
