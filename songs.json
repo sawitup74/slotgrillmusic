@@ -55,6 +55,28 @@
    "kbps": 193,
    "origin": "site",
    "note": "off by default: suggestive lyrics, Keith to approve"
+  },
+  {
+   "id": "45-second-slot-grill-kaleidoscope-song-5dd520",
+   "title": "45 second slot Grill Kaleidoscope song",
+   "file": "songs/45-second-slot-grill-kaleidoscope-song-5dd520.mp3",
+   "duration": 59,
+   "listed": true,
+   "md5": "916743961048412fccb855d7a588e6d2",
+   "bytes": 1337059,
+   "kbps": 180,
+   "origin": "suno:45 second slot Grill Kaleidoscope song.mp3"
+  },
+  {
+   "id": "slot-grill-81a179",
+   "title": "Slot Grill",
+   "file": "songs/slot-grill-81a179.mp3",
+   "duration": 15,
+   "listed": true,
+   "md5": "f073a746938e75c3ae6f1cf609adc476",
+   "bytes": 334854,
+   "kbps": 180,
+   "origin": "suno:Slot Grill.mp3"
   }
  ]
 }
