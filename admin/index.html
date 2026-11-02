@@ -15,11 +15,23 @@ td.t{width:100%}.d{color:#71717a;font-variant-numeric:tabular-nums;white-space:n
 .tg{min-width:84px}.on{background:#dcfce7;border-color:#86efac}.off{background:#fee2e2;border-color:#fca5a5}
 .bar{position:sticky;top:0;background:#f4f4f5;padding:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:2}
 .o{white-space:nowrap}.num{width:52px;padding:6px;font:inherit}.up,.dn{padding:4px 7px}.sm{padding:3px 9px;font-size:.82rem;margin:3px 2px 0 0}.sel{background:#18181b;color:#fff;border-color:#18181b}.vs,.ve{width:64px;padding:3px}.pn{width:100%;max-width:420px;padding:4px;margin-top:4px;font:inherit;font-size:.85rem}.bar2{margin:0 0 12px}.bar2 select{padding:6px;font:inherit}#vbox{margin-bottom:12px}
+.ap{position:sticky;top:0;z-index:5;display:flex;gap:12px;align-items:center;background:#18181b;color:#fff;padding:10px 12px;border-radius:10px;margin:8px 0;box-shadow:0 6px 20px #0003}
+.ap .mut{color:#a1a1aa}.ap button{background:#27272a;color:#fff;border-color:#3f3f46}#apPlay{width:52px;height:52px;border-radius:50%;font-size:20px;background:#f97316;border:0;color:#000;flex:none}
+.apm{flex:1;min-width:0}.aps{display:flex;gap:10px;align-items:center}#apSeek{flex:1;accent-color:#f97316}.tm{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700}
+.bar{top:96px}tr.np{background:#fff7ed;box-shadow:inset 4px 0 0 #f97316}.npb{display:none;background:#f97316;color:#000;font-size:.72rem;font-weight:700;padding:2px 6px;border-radius:4px;margin-left:6px}
+tr.np .npb{display:inline-block}.eq{display:none;gap:2px;align-items:flex-end;height:12px;margin-left:6px}.eq b{width:3px;background:#f97316;height:30%}
+tr.np.pl .eq{display:inline-flex}tr.np.pl .eq b{animation:eq .8s ease-in-out infinite alternate}.eq b:nth-child(2){animation-delay:-.3s}.eq b:nth-child(3){animation-delay:-.55s}
+@keyframes eq{to{height:100%}}.vt{margin-top:4px}.vt button{padding:3px 8px;font-size:.8rem;margin:2px 2px 0 0}.rmsg{color:#c2410c;font-size:.82rem;margin-left:4px}
 .mut{color:#71717a;font-size:.9rem}#msg{font-weight:600}
 </style></head><body><main>
 <h1>Admin</h1>
 <div id="login" class="box"><form id="lf"><label>Password <input id="pw" type="password" autocomplete="current-password" required></label> <button class="pri">Sign in</button></form><p id="lmsg" class="mut"></p></div>
 <div id="app" hidden>
+<div id="ap" class="ap"><button id="apPlay" class="pri" aria-label="Play">▶</button>
+<div class="apm"><div><span id="apLbl" class="mut">No song loaded</span> <b id="apTitle"></b></div>
+<div class="aps"><input id="apSeek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek"><span id="apTime" class="tm">0.0 s / 0.0 s</span></div>
+<div class="apn"><button class="sm" data-n="-5">−5s</button><button class="sm" data-n="-1">−1s</button><button class="sm" data-n="-0.1">−0.1</button><button class="sm" data-n="0.1">+0.1</button><button class="sm" data-n="1">+1s</button><button class="sm" data-n="5">+5s</button><span id="apMsg" class="mut"></span></div></div></div>
+<audio id="a" preload="metadata"></audio>
 <div class="bar"><button class="pri" id="save">Save</button><button id="allon">List all</button><button id="alloff">Unlist all</button><span id="msg"></span><span id="cnt" class="mut"></span></div>
 <p class="mut">Type a number to set the public order (others shift to make room), or use ▲▼. Unlisting moves a song to the bottom and closes the gap. Category, Branded, video start/end and notes are private, just for you; the public page never shows them. Listed songs show on the public page. Saving needs the password (checked by the server). Note: this song list itself is not secret, and unlisted MP3 files still exist at their (hard-to-guess) URLs.</p>
 <div class="bar2">Show: <select id="fc" aria-label="Category"><option value="">All categories</option><option value="country">Country</option><option value="reggae">Reggae</option><option value="other">Other</option></select>
@@ -28,7 +40,6 @@ td.t{width:100%}.d{color:#71717a;font-variant-numeric:tabular-nums;white-space:n
 <div id="vbox" class="box" hidden><b>Videos to make</b><ul id="vids"></ul></div>
 <div class="box"><table><tbody id="rows"></tbody></table></div>
 </div>
-<audio id="a" preload="none"></audio>
 </main>
 <script src="../music-config.js"></script>
 <script>
@@ -64,11 +75,11 @@ function draw(){var tb=$('rows'),fc=$('fc').value,fb=$('fb').value,vid=$('fv').c
   if(fc&&m.category!==fc)return;if(fb==='y'&&m.branded!==true)return;if(fb==='n'&&m.branded!==false)return;if(fb==='u'&&m.branded!=null)return;if(vid&&!m.videoWanted)return;
   var tr=document.createElement('tr');tr.dataset.id=id;
   tr.innerHTML='<td class="o"><input class="num" type="number" min="1" aria-label="Order"><button class="up" aria-label="Up">▲</button><button class="dn" aria-label="Down">▼</button></td>'+
-   '<td><button class="pv" aria-label="Preview">▶</button></td><td class="t"><div class="tt"></div><div class="row2">'+
+   '<td><button class="pv" aria-label="Play">▶</button></td><td class="t"><div><span class="tt"></span><span class="npb">NOW PLAYING</span><span class="eq" aria-hidden="true"><b></b><b></b><b></b></span></div><div class="row2">'+
    CATS.map(function(c){return '<button class="sm cat'+(m.category===c?' sel':'')+'" data-c="'+c+'">'+c[0].toUpperCase()+c.slice(1)+'</button>'}).join('')+
    ' <button class="sm br'+(m.branded===true?' sel':'')+'" data-b="1">Branded</button><button class="sm br'+(m.branded===false?' sel':'')+'" data-b="0">Not branded</button>'+
    (m.def?' <span class="mut def">(default, change if wrong)</span>':'')+
-   ' <button class="sm vw'+(m.videoWanted?' sel':'')+'">Make a video</button><label class="mut"> start <input class="vs" type="number" min="0" placeholder="sec"></label><label class="mut"> end <input class="ve" type="number" min="0" placeholder="sec"></label><br><input class="pn" placeholder="Private note (only you see this)"></div></td>'+
+   ' <button class="sm vw'+(m.videoWanted?' sel':'')+'">Make a video</button><label class="mut"> start <input class="vs" type="number" min="0" placeholder="sec"></label><label class="mut"> end <input class="ve" type="number" min="0" placeholder="sec"></label><div class="vt"><button class="sstart">⏱ Use current time as START</button><button class="send">⏱ Use current time as END</button><button class="ns" data-f="videoStart" data-d="-1">start −1</button><button class="ns" data-f="videoStart" data-d="1">start +1</button><button class="ns" data-f="videoEnd" data-d="-1">end −1</button><button class="ns" data-f="videoEnd" data-d="1">end +1</button><button class="pfs">▶ Play from start</button><button class="pte">▶ Preview start→end</button><span class="rmsg"></span></div><input class="pn" placeholder="Private note (only you see this)"></div></td>'+
    '<td class="d">'+fmt(s.duration)+'</td><td><button class="tg '+(on?'on':'off')+'">'+(on?'LISTED':'UNLISTED')+'</button></td>';
   tr.querySelector('.tt').textContent=s.title+(s.note?'  ('+s.note+')':'');
   var num=tr.querySelector('.num');num.value=on?L.indexOf(id)+1:'';num.placeholder=on?'':'–';
@@ -81,14 +92,39 @@ function draw(){var tb=$('rows'),fc=$('fc').value,fb=$('fb').value,vid=$('fv').c
   tr.querySelector('.vw').onclick=function(){m.videoWanted=!m.videoWanted;dirty();draw()};
   [['vs','videoStart'],['ve','videoEnd']].forEach(function(p){var e=tr.querySelector('.'+p[0]);e.value=m[p[1]];e.onchange=function(){m[p[1]]=e.value===''?'':Math.max(0,+e.value||0);dirty();drawV()}});
   var pn=tr.querySelector('.pn');pn.value=m.pnote;pn.oninput=function(){m.pnote=pn.value;dirty()};pn.onchange=drawV;
-  var pv=tr.querySelector('.pv');pv.onclick=function(){if(playing===id&&!A.paused){A.pause();return}
-   [].forEach.call(document.querySelectorAll('.pv'),function(b){b.textContent='▶'});A.src='../'+s.file;A.play().catch(function(){});playing=id;pv.textContent='⏸'};
+  tr.querySelector('.pv').onclick=function(){if(playing===id){A.paused?A.play().catch(function(){}):A.pause()}else playSong(id)};
+  var rm=tr.querySelector('.rmsg');
+  function grab(f){if(playing!==id){rm.textContent=playing?'Another song is playing. Loaded this one: press play, then click again.':'Loaded this song: press play, then click again.';playSong(id,null,null,true);return}
+   m[f]=Math.round(A.currentTime*10)/10;tr.querySelector(f==='videoStart'?'.vs':'.ve').value=m[f];rm.textContent='';dirty();drawV()}
+  tr.querySelector('.sstart').onclick=function(){grab('videoStart')};tr.querySelector('.send').onclick=function(){grab('videoEnd')};
+  [].forEach.call(tr.querySelectorAll('.ns'),function(b){b.onclick=function(){var f=b.dataset.f,v=(m[f]===''?0:+m[f])+(+b.dataset.d);m[f]=Math.max(0,Math.round(v*10)/10);
+   tr.querySelector(f==='videoStart'?'.vs':'.ve').value=m[f];dirty();drawV();if(playing===id)A.currentTime=m[f]}});
+  tr.querySelector('.pfs').onclick=function(){playSong(id,m.videoStart===''?0:+m.videoStart)};
+  tr.querySelector('.pte').onclick=function(){if(m.videoEnd===''){rm.textContent='Set an END time first.';return}playSong(id,m.videoStart===''?0:+m.videoStart,+m.videoEnd)};
   tb.appendChild(tr)});
- drawV();count()}
+ drawV();count();markRows()}
 function drawV(){var vl=S.filter(function(s){return M[s.id].videoWanted});
  $('vids').innerHTML='';vl.forEach(function(s){var m=M[s.id],li=document.createElement('li');li.textContent=s.title+' — start '+(m.videoStart===''?'?':m.videoStart+'s')+', end '+(m.videoEnd===''?'?':m.videoEnd+'s')+(m.pnote?' — '+m.pnote:'');$('vids').appendChild(li)});
  $('vbox').hidden=!vl.length}
-A.onended=A.onpause=function(){[].forEach.call(document.querySelectorAll('.pv'),function(b){b.textContent='▶'})};
+// admin player
+var stopAt=null;
+function f1(x){return (isFinite(x)?x:0).toFixed(1)+' s'}
+function playSong(id,from,to,noplay){var s=byId(id);if(playing!==id){A.src='../'+s.file;playing=id}
+ stopAt=to==null?null:to;var go=function(){if(from!=null)try{A.currentTime=from}catch(e){}if(!noplay)A.play().catch(function(){})};
+ if(from!=null&&A.readyState<1){A.addEventListener('loadedmetadata',function h(){A.removeEventListener('loadedmetadata',h);try{A.currentTime=from}catch(e){}},{once:true})}
+ go();$('apTitle').textContent=s.title;tick();markRows()}
+function markRows(){var on=!A.paused;[].forEach.call(document.querySelectorAll('#rows tr'),function(tr){var c=tr.dataset.id===playing;tr.classList.toggle('np',c);tr.classList.toggle('pl',c&&on);
+  tr.querySelector('.pv').textContent=c&&on?'⏸':'▶'});
+ $('apPlay').textContent=on?'⏸':'▶';$('apPlay').setAttribute('aria-label',on?'Pause':'Play');$('apLbl').textContent=playing?(on?'Now playing:':'Paused:'):'No song loaded'}
+function tick(){$('apTime').textContent=f1(A.currentTime)+' / '+f1(A.duration);if(A.duration&&!seeking)$('apSeek').value=Math.round(A.currentTime/A.duration*1000)}
+var seeking=false;
+A.ontimeupdate=function(){if(stopAt!=null&&A.currentTime>=stopAt){A.pause();stopAt=null}tick()};
+A.onloadedmetadata=A.ondurationchange=tick;A.onplay=A.onpause=A.onended=markRows;
+$('apSeek').oninput=function(){seeking=true;if(A.duration){A.currentTime=this.value/1000*A.duration;tick()}};$('apSeek').onchange=function(){seeking=false};
+$('apPlay').onclick=function(){if(!playing){var f=L[0]||U[0];if(f)playSong(f);return}A.paused?A.play().catch(function(){}):A.pause()};
+[].forEach.call(document.querySelectorAll('.apn button'),function(b){b.onclick=function(){if(!playing)return;A.currentTime=Math.max(0,Math.min(A.duration||1e9,A.currentTime+(+b.dataset.n)));tick()}});
+document.addEventListener('keydown',function(e){if(e.code!=='Space'&&e.key!==' ')return;var t=e.target.tagName;if(t==='INPUT'||t==='TEXTAREA'||t==='SELECT'||t==='BUTTON'||$('app').hidden)return;e.preventDefault();$('apPlay').click()});
+window.__player={playSong:playSong,get playing(){return playing}};
 ['fc','fb','fv'].forEach(function(x){$(x).onchange=draw});
 $('lf').onsubmit=function(e){e.preventDefault();var p=$('pw').value;
  if(!EP){$('lmsg').textContent='Listing service is not connected yet.';return}
