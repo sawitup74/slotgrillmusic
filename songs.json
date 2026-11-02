@@ -1,0 +1,60 @@
+{
+ "songs": [
+  {
+   "id": "juicy-juicy-on-the-slot-grill-c068a5",
+   "title": "Juicy Juicy on the Slot Grill",
+   "file": "songs/juicy-juicy-on-the-slot-grill-c068a5.mp3",
+   "duration": 59,
+   "listed": true,
+   "md5": "b991868e876c68947c9e3ea37945c831",
+   "bytes": 1306678,
+   "kbps": 176,
+   "origin": "site"
+  },
+  {
+   "id": "the-slot-grill-king-2-1e4a76",
+   "title": "The Slot Grill King 2",
+   "file": "songs/the-slot-grill-king-2-1e4a76.mp3",
+   "duration": 153,
+   "listed": true,
+   "md5": "01bf95e658d4c1dc1aad46e509d31fdf",
+   "bytes": 3584862,
+   "kbps": 187,
+   "origin": "site"
+  },
+  {
+   "id": "and-my-slot-grill-reggae-55e818",
+   "title": "And my Slot Grill (reggae)",
+   "file": "songs/and-my-slot-grill-reggae-55e818.mp3",
+   "duration": 304,
+   "listed": true,
+   "md5": "60fdb3fc94df33ee71c6f7231897e152",
+   "bytes": 7128691,
+   "kbps": 187,
+   "origin": "site"
+  },
+  {
+   "id": "relaxing-song-for-video-914201",
+   "title": "relaxing song for video",
+   "file": "songs/relaxing-song-for-video-914201.mp3",
+   "duration": 199,
+   "listed": true,
+   "md5": "3c4364814e1016d56d9adf9821042a20",
+   "bytes": 4845354,
+   "kbps": 194,
+   "origin": "site"
+  },
+  {
+   "id": "weenies-629ae2",
+   "title": "Weenies!",
+   "file": "songs/weenies-629ae2.mp3",
+   "duration": 164,
+   "listed": false,
+   "md5": "3aac842b2b0a5a425c3d8573ef363b7b",
+   "bytes": 3975715,
+   "kbps": 193,
+   "origin": "site",
+   "note": "off by default: suggestive lyrics, Keith to approve"
+  }
+ ]
+}

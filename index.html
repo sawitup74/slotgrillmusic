@@ -46,6 +46,7 @@ footer{text-align:center;padding:40px 18px;color:var(--mut);font-size:.9rem}
 <div><div id="now">Pick a song</div><input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek"></div>
 <div class="tm"><span id="cur">0:00</span>/<span id="dur">0:00</span></div></div></div>
 <audio id="a" preload="none"></audio>
+<script src="music-config.js"></script>
 <script>
 (function(){
 var A=document.getElementById('a'),list=document.getElementById('list'),T=[],i=-1,$=function(x){return document.getElementById(x)};
@@ -58,13 +59,18 @@ fetch('config.json').then(function(r){return r.json()}).then(function(c){
  var s=(c.streaming||[]).filter(function(x){return x.enabled&&x.url});
  if(s.length){s.forEach(function(x){chip($('str'),x)});$('streaming').hidden=false;$('navStream').hidden=false}
 });
-fetch('tracks.json').then(function(r){return r.json()}).then(function(d){
- T=(d.tracks||[]).filter(function(t){return t.enabled!==false});
+function render(){list.innerHTML='';
  if(!T.length){$('empty').hidden=false;list.hidden=true;return}
+ $('empty').hidden=true;list.hidden=false;
  T.forEach(function(t,k){var li=document.createElement('li'),b=document.createElement('button');
   b.innerHTML='<span class="n">'+(k+1)+'</span><span class="t"></span><span class="d">'+(t.duration?fmt(t.duration):'')+'</span>';
-  b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};li.appendChild(b);list.appendChild(li)});
-});
+  b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};li.appendChild(b);list.appendChild(li)});}
+function apply(all,ov){ov=ov||{};T=all.filter(function(t){return t.id in ov?ov[t.id]:t.listed!==false});render()}
+function overrides(){var u=window.MUSIC_ENDPOINT;if(!u)return Promise.resolve(null);
+ var ctl=window.AbortController?new AbortController():null;if(ctl)setTimeout(function(){ctl.abort()},6000);
+ return fetch(u+(u.indexOf('?')<0?'?':'&')+'action=list',ctl?{signal:ctl.signal}:{}).then(function(r){return r.json()}).then(function(j){
+  if(!j||!j.ok)return null;var o={};(j.listed||[]).forEach(function(x){o[x]=true});(j.unlisted||[]).forEach(function(x){o[x]=false});return o}).catch(function(){return null})}
+Promise.all([fetch('songs.json',{cache:'no-cache'}).then(function(r){return r.json()}),overrides()]).then(function(v){apply(v[0].songs||[],v[1])});
 function load(k,play){if(!T.length)return;i=(k+T.length)%T.length;var t=T[i];A.src=t.file;$('now').textContent=t.title;
  [].forEach.call(list.querySelectorAll('button'),function(b,j){b.setAttribute('aria-current',j===i)});
  if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:'Slot Grill',album:'Slot Grill Music',artwork:[{src:'cover.jpg',sizes:'600x600',type:'image/jpeg'}]})}

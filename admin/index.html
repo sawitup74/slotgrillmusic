@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Admin</title>
+<style>
+body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f4f5;color:#18181b}
+main{max-width:760px;margin:auto;padding:24px 16px 80px}h1{font-size:1.3rem}
+.box{background:#fff;border:1px solid #e4e4e7;border-radius:10px;padding:16px}
+input[type=password]{padding:9px;border:1px solid #d4d4d8;border-radius:6px;width:240px;font:inherit}
+button{font:inherit;padding:8px 14px;border-radius:6px;border:1px solid #d4d4d8;background:#fff;cursor:pointer}
+button.pri{background:#18181b;color:#fff;border-color:#18181b}
+table{width:100%;border-collapse:collapse}td{padding:8px 6px;border-top:1px solid #eee;vertical-align:middle}
+td.t{width:100%}.d{color:#71717a;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tg{min-width:84px}.on{background:#dcfce7;border-color:#86efac}.off{background:#fee2e2;border-color:#fca5a5}
+.bar{position:sticky;top:0;background:#f4f4f5;padding:10px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;z-index:2}
+.mut{color:#71717a;font-size:.9rem}#msg{font-weight:600}
+</style></head><body><main>
+<h1>Admin</h1>
+<div id="login" class="box"><form id="lf"><label>Password <input id="pw" type="password" autocomplete="current-password" required></label> <button class="pri">Sign in</button></form><p id="lmsg" class="mut"></p></div>
+<div id="app" hidden>
+<div class="bar"><button class="pri" id="save">Save</button><button id="allon">List all</button><button id="alloff">Unlist all</button><span id="msg"></span><span id="cnt" class="mut"></span></div>
+<p class="mut">Listed songs show on the public page. Saving needs the password (checked by the server). Note: this song list itself is not secret, and unlisted MP3 files still exist at their (hard-to-guess) URLs.</p>
+<div class="box"><table><tbody id="rows"></tbody></table></div>
+</div>
+<audio id="a" preload="none"></audio>
+</main>
+<script src="../music-config.js"></script>
+<script>
+(function(){
+var $=function(x){return document.getElementById(x)},EP=window.MUSIC_ENDPOINT,PW='',S=[],st={},A=$('a'),playing=null;
+function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function post(o){return fetch(EP,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(o)}).then(function(r){return r.json()})}
+function getList(){if(!EP)return Promise.resolve({});return fetch(EP+'?action=list').then(function(r){return r.json()}).then(function(j){var o={};(j.listed||[]).forEach(function(x){o[x]=true});(j.unlisted||[]).forEach(function(x){o[x]=false});return o}).catch(function(){return {}})}
+function count(){var n=S.filter(function(s){return st[s.id]}).length;$('cnt').textContent=n+' of '+S.length+' listed'}
+function draw(){var tb=$('rows');tb.innerHTML='';S.forEach(function(s){var tr=document.createElement('tr');
+ tr.innerHTML='<td><button class="pv" aria-label="Preview">▶</button></td><td class="t"></td><td class="d">'+fmt(s.duration)+'</td><td><button class="tg"></button></td>';
+ tr.querySelector('.t').textContent=s.title+(s.note?'  ('+s.note+')':'');
+ var tg=tr.querySelector('.tg'),pv=tr.querySelector('.pv');
+ function paint(){tg.textContent=st[s.id]?'LISTED':'UNLISTED';tg.className='tg '+(st[s.id]?'on':'off')}paint();
+ tg.onclick=function(){st[s.id]=!st[s.id];paint();count();$('msg').textContent='Unsaved changes'};
+ pv.onclick=function(){if(playing===s.id&&!A.paused){A.pause();return}
+  [].forEach.call(document.querySelectorAll('.pv'),function(b){b.textContent='▶'});A.src='../'+s.file;A.play().catch(function(){});playing=s.id;pv.textContent='⏸'};
+ tb.appendChild(tr)});count()}
+A.onended=A.onpause=function(){[].forEach.call(document.querySelectorAll('.pv'),function(b){b.textContent='▶'})};
+$('lf').onsubmit=function(e){e.preventDefault();var p=$('pw').value;
+ if(!EP){$('lmsg').textContent='Listing service is not connected yet.';return}
+ $('lmsg').textContent='Checking…';
+ post({action:'check',password:p}).then(function(j){if(!j.ok){$('lmsg').textContent=j.error||'Wrong password';return}
+  PW=p;$('pw').value='';
+  Promise.all([fetch('../songs.json',{cache:'no-cache'}).then(function(r){return r.json()}),getList()]).then(function(v){
+   S=v[0].songs||[];S.forEach(function(s){st[s.id]=s.id in v[1]?v[1][s.id]:s.listed!==false});
+   $('login').hidden=true;$('app').hidden=false;draw()})
+ }).catch(function(){$('lmsg').textContent='Could not reach the listing service.'})};
+function setAll(v){S.forEach(function(s){st[s.id]=v});draw();$('msg').textContent='Unsaved changes'}
+$('allon').onclick=function(){setAll(true)};$('alloff').onclick=function(){setAll(false)};
+$('save').onclick=function(){$('msg').textContent='Saving…';var o={};S.forEach(function(s){o[s.id]=!!st[s.id]});
+ post({action:'save',password:PW,overrides:o}).then(function(j){$('msg').textContent=j.ok?'Saved ✓':'Not saved: '+(j.error||'error')}).catch(function(){$('msg').textContent='Not saved: network error'})};
+window.addEventListener('beforeunload',function(e){if($('msg').textContent==='Unsaved changes'){e.preventDefault();e.returnValue=''}});
+})();
+</script>
+</body></html>
