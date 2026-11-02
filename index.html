@@ -65,11 +65,14 @@ function render(){list.innerHTML='';
  T.forEach(function(t,k){var li=document.createElement('li'),b=document.createElement('button');
   b.innerHTML='<span class="n">'+(k+1)+'</span><span class="t"></span><span class="d">'+(t.duration?fmt(t.duration):'')+'</span>';
   b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};li.appendChild(b);list.appendChild(li)});}
-function apply(all,ov){ov=ov||{};T=all.filter(function(t){return t.id in ov?ov[t.id]:t.listed!==false});render()}
+function apply(all,ov){if(!ov){T=all.filter(function(t){return t.listed!==false});return render()}
+ var by={};all.forEach(function(t){by[t.id]=t});T=[];
+ ov.listed.forEach(function(id){if(by[id])T.push(by[id])});
+ all.forEach(function(t){if(!(t.id in ov.known)&&t.listed!==false)T.push(t)});render()}
 function overrides(){var u=window.MUSIC_ENDPOINT;if(!u)return Promise.resolve(null);
  var ctl=window.AbortController?new AbortController():null;if(ctl)setTimeout(function(){ctl.abort()},6000);
  return fetch(u+(u.indexOf('?')<0?'?':'&')+'action=list',ctl?{signal:ctl.signal}:{}).then(function(r){return r.json()}).then(function(j){
-  if(!j||!j.ok)return null;var o={};(j.listed||[]).forEach(function(x){o[x]=true});(j.unlisted||[]).forEach(function(x){o[x]=false});return o}).catch(function(){return null})}
+  if(!j||!j.ok)return null;var k={};(j.listed||[]).concat(j.unlisted||[]).forEach(function(x){k[x]=1});return {listed:j.listed||[],known:k}}).catch(function(){return null})}
 Promise.all([fetch('songs.json',{cache:'no-cache'}).then(function(r){return r.json()}),overrides()]).then(function(v){apply(v[0].songs||[],v[1])});
 function load(k,play){if(!T.length)return;i=(k+T.length)%T.length;var t=T[i];A.src=t.file;$('now').textContent=t.title;
  [].forEach.call(list.querySelectorAll('button'),function(b,j){b.setAttribute('aria-current',j===i)});
