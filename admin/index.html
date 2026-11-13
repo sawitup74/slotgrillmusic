@@ -23,6 +23,7 @@ tr.np .npb{display:inline-block}.eq{display:none;gap:2px;align-items:flex-end;he
 tr.np.pl .eq{display:inline-flex}tr.np.pl .eq b{animation:eq .8s ease-in-out infinite alternate}.eq b:nth-child(2){animation-delay:-.3s}.eq b:nth-child(3){animation-delay:-.55s}
 @keyframes eq{to{height:100%}}.vt{margin-top:4px}.vt button{padding:3px 8px;font-size:.8rem;margin:2px 2px 0 0}.rmsg{color:#c2410c;font-size:.82rem;margin-left:4px}
 .mut{color:#71717a;font-size:.9rem}#msg{font-weight:600}
+.pt{width:calc(100% - 140px);min-width:180px;max-width:520px;padding:4px 8px;border:1px solid #d4d4d8;border-radius:6px;font:inherit;font-weight:600;vertical-align:middle}
 </style></head><body><main>
 <h1>Admin</h1>
 <div id="login" class="box"><form id="lf"><label>Password <input id="pw" type="password" autocomplete="current-password" required></label> <button class="pri">Sign in</button></form><p id="lmsg" class="mut"></p></div>
@@ -33,7 +34,7 @@ tr.np.pl .eq{display:inline-flex}tr.np.pl .eq b{animation:eq .8s ease-in-out inf
 <div class="apn"><button class="sm" data-n="-5">−5s</button><button class="sm" data-n="-1">−1s</button><button class="sm" data-n="-0.1">−0.1</button><button class="sm" data-n="0.1">+0.1</button><button class="sm" data-n="1">+1s</button><button class="sm" data-n="5">+5s</button><span id="apMsg" class="mut"></span></div></div></div>
 <audio id="a" preload="metadata"></audio>
 <div class="bar"><button class="pri" id="save">Save</button><button id="allon">List all</button><button id="alloff">Unlist all</button><span id="msg"></span><span id="cnt" class="mut"></span></div>
-<p class="mut">Type a number to set the public order (others shift to make room), or use ▲▼. Unlisting moves a song to the bottom and closes the gap. Category, Branded, video start/end and notes are private, just for you; the public page never shows them. Listed songs show on the public page. Saving needs the password (checked by the server). Note: this song list itself is not secret, and unlisted MP3 files still exist at their (hard-to-guess) URLs.</p>
+<p class="mut">Type a number to set the public order (others shift to make room), or use ▲▼. Unlisting moves a song to the bottom and closes the gap. You can edit a song title in the box next to it; Save puts that title on the public page too. Category, Branded, video start/end and notes are private, just for you; the public page never shows them. Listed songs show on the public page. Saving needs the password (checked by the server). Note: this song list itself is not secret, and unlisted MP3 files still exist at their (hard-to-guess) URLs.</p>
 <div class="bar2">Show: <select id="fc" aria-label="Category"><option value="">All categories</option><option value="country">Country</option><option value="reggae">Reggae</option><option value="other">Other</option></select>
 <select id="fb" aria-label="Branded"><option value="">Branded + not</option><option value="y">Branded</option><option value="n">Not branded</option><option value="u">Not chosen</option></select>
 <label><input type="checkbox" id="fv"> Videos to make only</label></div>
@@ -58,7 +59,8 @@ function init(songs,j){S=songs;M={};L=[];U=[];V2=!!(j&&j.version>=2);
  if(j){(j.listed||[]).forEach(function(id){known[id]=1;L.push(id)});(j.unlisted||[]).forEach(function(id){known[id]=1;U.push(id)})}
  var ids={};S.forEach(function(s){ids[s.id]=1});L=L.filter(function(x){return ids[x]});U=U.filter(function(x){return ids[x]});
  S.forEach(function(s){var m=meta[s.id]||{},f=full[s.id]||{},t=s.title.toLowerCase(),def=!(s.id in meta);
-  M[s.id]={category:m.category||(def&&/reggae/.test(t)?'reggae':'other'),branded:m.branded===true||m.branded===false?m.branded:(def&&/slot grill/.test(t)?true:null),
+  var savedTitle=(typeof f.title==='string'&&f.title.trim())?f.title.trim():((typeof m.title==='string'&&m.title.trim())?m.title.trim():s.title);
+  M[s.id]={title:savedTitle,category:m.category||(def&&/reggae/.test(t)?'reggae':'other'),branded:m.branded===true||m.branded===false?m.branded:(def&&/slot grill/.test(t)?true:null),
    def:def&&(/reggae/.test(t)||/slot grill/.test(t)),videoWanted:!!f.videoWanted,videoStart:f.videoStart==null?'':f.videoStart,videoEnd:f.videoEnd==null?'':f.videoEnd,pnote:f.note||''};
   if(!known[s.id])(s.listed!==false?L:U).push(s.id)});
  U.sort(function(a,b){return S.findIndex(function(s){return s.id===a})-S.findIndex(function(s){return s.id===b})})}
@@ -75,13 +77,14 @@ function draw(){var tb=$('rows'),fc=$('fc').value,fb=$('fb').value,vid=$('fv').c
   if(fc&&m.category!==fc)return;if(fb==='y'&&m.branded!==true)return;if(fb==='n'&&m.branded!==false)return;if(fb==='u'&&m.branded!=null)return;if(vid&&!m.videoWanted)return;
   var tr=document.createElement('tr');tr.dataset.id=id;
   tr.innerHTML='<td class="o"><input class="num" type="number" min="1" aria-label="Order"><button class="up" aria-label="Up">▲</button><button class="dn" aria-label="Down">▼</button></td>'+
-   '<td><button class="pv" aria-label="Play">▶</button></td><td class="t"><div><span class="tt"></span><span class="npb">NOW PLAYING</span><span class="eq" aria-hidden="true"><b></b><b></b><b></b></span></div><div class="row2">'+
+   '<td><button class="pv" aria-label="Play">▶</button></td><td class="t"><div><input class="pt" aria-label="Song title"><span class="npb">NOW PLAYING</span><span class="eq" aria-hidden="true"><b></b><b></b><b></b></span></div><div class="row2">'+
    CATS.map(function(c){return '<button class="sm cat'+(m.category===c?' sel':'')+'" data-c="'+c+'">'+c[0].toUpperCase()+c.slice(1)+'</button>'}).join('')+
    ' <button class="sm br'+(m.branded===true?' sel':'')+'" data-b="1">Branded</button><button class="sm br'+(m.branded===false?' sel':'')+'" data-b="0">Not branded</button>'+
    (m.def?' <span class="mut def">(default, change if wrong)</span>':'')+
    ' <button class="sm vw'+(m.videoWanted?' sel':'')+'">Make a video</button><label class="mut"> start <input class="vs" type="number" min="0" placeholder="sec"></label><label class="mut"> end <input class="ve" type="number" min="0" placeholder="sec"></label><div class="vt"><button class="sstart">⏱ Use current time as START</button><button class="send">⏱ Use current time as END</button><button class="ns" data-f="videoStart" data-d="-1">start −1</button><button class="ns" data-f="videoStart" data-d="1">start +1</button><button class="ns" data-f="videoEnd" data-d="-1">end −1</button><button class="ns" data-f="videoEnd" data-d="1">end +1</button><button class="pfs">▶ Play from start</button><button class="pte">▶ Preview start→end</button><span class="rmsg"></span></div><input class="pn" placeholder="Private note (only you see this)"></div></td>'+
    '<td class="d">'+fmt(s.duration)+'</td><td><button class="tg '+(on?'on':'off')+'">'+(on?'LISTED':'UNLISTED')+'</button></td>';
-  tr.querySelector('.tt').textContent=s.title+(s.note?'  ('+s.note+')':'');
+  var pt=tr.querySelector('.pt');pt.value=m.title;pt.oninput=function(){m.title=pt.value;dirty();if(playing===id)$('apTitle').textContent=m.title||s.title};
+  pt.onchange=function(){if(!pt.value.trim()){m.title=s.title;pt.value=s.title}else{m.title=pt.value.trim();pt.value=m.title}dirty();if(playing===id)$('apTitle').textContent=m.title;drawV()};
   var num=tr.querySelector('.num');num.value=on?L.indexOf(id)+1:'';num.placeholder=on?'':'–';
   num.onchange=function(){if(num.value==='')return draw();setNum(id,+num.value);dirty();draw()};
   tr.querySelector('.up').onclick=function(){move(id,-1);dirty();draw()};tr.querySelector('.dn').onclick=function(){move(id,1);dirty();draw()};
@@ -104,7 +107,7 @@ function draw(){var tb=$('rows'),fc=$('fc').value,fb=$('fb').value,vid=$('fv').c
   tb.appendChild(tr)});
  drawV();count();markRows()}
 function drawV(){var vl=S.filter(function(s){return M[s.id].videoWanted});
- $('vids').innerHTML='';vl.forEach(function(s){var m=M[s.id],li=document.createElement('li');li.textContent=s.title+' — start '+(m.videoStart===''?'?':m.videoStart+'s')+', end '+(m.videoEnd===''?'?':m.videoEnd+'s')+(m.pnote?' — '+m.pnote:'');$('vids').appendChild(li)});
+ $('vids').innerHTML='';vl.forEach(function(s){var m=M[s.id],li=document.createElement('li');li.textContent=(m.title||s.title)+' — start '+(m.videoStart===''?'?':m.videoStart+'s')+', end '+(m.videoEnd===''?'?':m.videoEnd+'s')+(m.pnote?' — '+m.pnote:'');$('vids').appendChild(li)});
  $('vbox').hidden=!vl.length}
 // admin player
 var stopAt=null;
@@ -112,7 +115,7 @@ function f1(x){return (isFinite(x)?x:0).toFixed(1)+' s'}
 function playSong(id,from,to,noplay){var s=byId(id);if(playing!==id){A.src='../'+s.file;playing=id}
  stopAt=to==null?null:to;var go=function(){if(from!=null)try{A.currentTime=from}catch(e){}if(!noplay)A.play().catch(function(){})};
  if(from!=null&&A.readyState<1){A.addEventListener('loadedmetadata',function h(){A.removeEventListener('loadedmetadata',h);try{A.currentTime=from}catch(e){}},{once:true})}
- go();$('apTitle').textContent=s.title;tick();markRows()}
+ go();$('apTitle').textContent=(M[id]&&M[id].title)||s.title;tick();markRows()}
 function markRows(){var on=!A.paused;[].forEach.call(document.querySelectorAll('#rows tr'),function(tr){var c=tr.dataset.id===playing;tr.classList.toggle('np',c);tr.classList.toggle('pl',c&&on);
   tr.querySelector('.pv').textContent=c&&on?'⏸':'▶'});
  $('apPlay').textContent=on?'⏸':'▶';$('apPlay').setAttribute('aria-label',on?'Pause':'Play');$('apLbl').textContent=playing?(on?'Now playing:':'Paused:'):'No song loaded'}
@@ -137,7 +140,7 @@ $('lf').onsubmit=function(e){e.preventDefault();var p=$('pw').value;
 function setAll(v){if(v){U.slice().forEach(relist)}else{L.slice().forEach(unlist)}draw();dirty()}
 $('allon').onclick=function(){setAll(true)};$('alloff').onclick=function(){setAll(false)};
 function payload(){var songs={},ov={};L.forEach(function(id,k){ov[id]=true});U.forEach(function(id){ov[id]=false});
- S.forEach(function(s){var m=M[s.id],k=L.indexOf(s.id);songs[s.id]={listed:k>=0,order:k>=0?k+1:null,category:m.category,branded:m.branded,videoWanted:m.videoWanted,videoStart:m.videoStart===''?null:m.videoStart,videoEnd:m.videoEnd===''?null:m.videoEnd,note:m.pnote}});
+ S.forEach(function(s){var m=M[s.id],k=L.indexOf(s.id);songs[s.id]={listed:k>=0,order:k>=0?k+1:null,category:m.category,branded:m.branded,videoWanted:m.videoWanted,videoStart:m.videoStart===''?null:m.videoStart,videoEnd:m.videoEnd===''?null:m.videoEnd,note:m.pnote,title:m.title}});
  return {action:'save',password:PW,overrides:ov,songs:songs}}
 window.__payload=payload;
 $('save').onclick=function(){$('msg').textContent='Saving…';
