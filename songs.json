@@ -377,6 +377,17 @@
    "bytes": 2197870,
    "kbps": 182,
    "origin": "suno:_ Tracy Song.mp3"
+  },
+  {
+   "id": "truckin-under-the-stars-52fe89",
+   "title": "Truckin Under the Stars",
+   "file": "songs/truckin-under-the-stars-52fe89.mp3",
+   "duration": 245,
+   "listed": true,
+   "md5": "c3b66f2a5068f534f73e3748afdc2431",
+   "bytes": 5678801,
+   "kbps": 185,
+   "origin": "suno:Truckin under the stars.mp3"
   }
  ]
 }
