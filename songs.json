@@ -432,6 +432,28 @@
    "bytes": 3962679,
    "kbps": 191,
    "origin": "suno:Makin love on the Slot Grill.mp3"
+  },
+  {
+   "id": "everybody-loves-my-meat-c0f995",
+   "title": "Everybody Loves My Meat",
+   "file": "songs/everybody-loves-my-meat-c0f995.mp3",
+   "duration": 185,
+   "listed": true,
+   "md5": "ead7b109ba980ac94d06d160a075d49e",
+   "bytes": 4156621,
+   "kbps": 180,
+   "origin": "suno:Everybody Loves My Meat.mp3"
+  },
+  {
+   "id": "still-standing-3b326d",
+   "title": "Still Standing",
+   "file": "songs/still-standing-3b326d.mp3",
+   "duration": 254,
+   "listed": true,
+   "md5": "1bdcd3f39695a1b8ee4857a774e26a34",
+   "bytes": 5758165,
+   "kbps": 181,
+   "origin": "suno:Still Standing.mp3"
   }
  ]
 }
