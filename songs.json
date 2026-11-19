@@ -388,6 +388,50 @@
    "bytes": 5678801,
    "kbps": 185,
    "origin": "suno:Truckin under the stars.mp3"
+  },
+  {
+   "id": "hey-we-want-a-slot-grill-c45afe",
+   "title": "Hey We Want a Slot Grill",
+   "file": "songs/hey-we-want-a-slot-grill-c45afe.mp3",
+   "duration": 91,
+   "listed": true,
+   "md5": "3f28384ea969a9cfae503ab0aaf2314a",
+   "bytes": 2193894,
+   "kbps": 193,
+   "origin": "suno:Hey we want a Slot Grill.mp3"
+  },
+  {
+   "id": "everybody-loves-the-slot-grill-king-3690f6",
+   "title": "Everybody Loves the Slot Grill King",
+   "file": "songs/everybody-loves-the-slot-grill-king-3690f6.mp3",
+   "duration": 211,
+   "listed": true,
+   "md5": "c9148983eeea0a22f100667c852ad144",
+   "bytes": 5148752,
+   "kbps": 195,
+   "origin": "suno:Everybody loves the Slot Grill King.mp3"
+  },
+  {
+   "id": "doin-it-slot-grill-style-90bf64",
+   "title": "Doin' It Slot Grill Style",
+   "file": "songs/doin-it-slot-grill-style-90bf64.mp3",
+   "duration": 202,
+   "listed": true,
+   "md5": "12c7050482606cdbaf53fa11ddd0aee3",
+   "bytes": 4896770,
+   "kbps": 194,
+   "origin": "suno:Doin it Slot Grill Style.mp3"
+  },
+  {
+   "id": "makin-love-on-the-slot-grill-e6cbc6",
+   "title": "Makin' Love on the Slot Grill",
+   "file": "songs/makin-love-on-the-slot-grill-e6cbc6.mp3",
+   "duration": 166,
+   "listed": true,
+   "md5": "1ea0c0a89f2b73743af1909535148c33",
+   "bytes": 3962679,
+   "kbps": 191,
+   "origin": "suno:Makin love on the Slot Grill.mp3"
   }
  ]
 }
