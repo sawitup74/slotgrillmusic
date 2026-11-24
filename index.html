@@ -19,7 +19,7 @@ body:before{content:"";position:fixed;inset:-20%;z-index:-2;background:radial-gr
 a{color:var(--hot)}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
 nav{position:sticky;top:0;z-index:5;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:10px;background:#0b0705d9;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 nav a{color:var(--txt);text-decoration:none;padding:6px 14px;border-radius:99px;font:700 .85rem/1.4 var(--cond);letter-spacing:.08em;text-transform:uppercase}nav a:hover{background:var(--ember);color:#000}
-main{max-width:820px;margin:auto;padding:0 16px}section{padding:46px 0 8px;scroll-margin-top:64px}
+main{max-width:820px;margin:auto;padding:0 16px;min-width:0}section{padding:46px 0 8px;scroll-margin-top:64px;min-width:0}
 header{text-align:center;padding:40px 0 8px}
 .logo{width:min(300px,70vw);height:auto;filter:drop-shadow(0 0 22px #ff5a1f88) drop-shadow(0 0 60px #e0261b55);animation:glow 3.2s ease-in-out infinite alternate}
 @keyframes glow{to{filter:drop-shadow(0 0 34px #ff7a1fbb) drop-shadow(0 0 90px #ffd23f44)}}
@@ -30,46 +30,73 @@ h2{font:400 clamp(1.8rem,6vw,2.6rem)/1 var(--cond);text-transform:uppercase;lett
 .mut{color:var(--mut)}
 .btn{display:inline-block;background:linear-gradient(90deg,var(--hot),var(--ember) 45%,var(--red));color:#160800;text-decoration:none;font:400 1.35rem/1 var(--cond);letter-spacing:.06em;text-transform:uppercase;padding:16px 30px;border-radius:12px;border:0;cursor:pointer;box-shadow:0 8px 30px #ff5a1f55;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 12px 40px #ff5a1f88}
-ol{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-ol li button{all:unset;box-sizing:border-box;display:flex;width:100%;gap:14px;align-items:center;padding:14px 16px;cursor:pointer;background:linear-gradient(180deg,#1f1610,#160f0b);border:1px solid var(--line);border-radius:14px;transition:transform .15s,border-color .15s,box-shadow .2s}
-ol li button:hover{transform:translateY(-2px);border-color:var(--ember);box-shadow:0 6px 24px #ff5a1f33}
-ol li button[aria-current=true]{border-color:var(--hot);background:linear-gradient(90deg,#3a1506,#1f1209);box-shadow:0 0 0 1px var(--hot),0 0 30px #ff5a1f66}
-ol li button[aria-current=true] .t{color:var(--hot)}
+ol{list-style:none;padding:0;margin:0;display:grid;gap:10px;min-width:0}
+.row{display:flex;gap:8px;align-items:stretch;width:100%;max-width:100%;min-width:0}
+ol li{min-width:0}
+ol li .trk{all:unset;box-sizing:border-box;display:flex;flex:1;min-width:0;gap:14px;align-items:center;padding:14px 16px;cursor:pointer;background:linear-gradient(180deg,#1f1610,#160f0b);border:1px solid var(--line);border-radius:14px;transition:transform .15s,border-color .15s,box-shadow .2s}
+ol li .trk:hover{transform:translateY(-2px);border-color:var(--ember);box-shadow:0 6px 24px #ff5a1f33}
+ol li .trk[aria-current=true]{border-color:var(--hot);background:linear-gradient(90deg,#3a1506,#1f1209);box-shadow:0 0 0 1px var(--hot),0 0 30px #ff5a1f66}
+ol li .trk[aria-current=true] .t{color:var(--hot)}
 .n{font:400 1.5rem/1 var(--cond);color:var(--ember);width:1.6em;text-align:center}
 .ic{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:#2a1a10;color:var(--hot);font-size:15px;transition:background .15s}
-ol li button:hover .ic{background:var(--ember);color:#160800}
-ol li button[aria-current=true] .ic{background:var(--hot);color:#160800}
-.t{flex:1;font-weight:700;font-size:1.02rem}.d{color:var(--mut);font-variant-numeric:tabular-nums;font-size:.9rem}
+ol li .trk:hover .ic{background:var(--ember);color:#160800}
+ol li .trk[aria-current=true] .ic{background:var(--hot);color:#160800}
+.t{flex:1;font-weight:700;font-size:1.02rem;min-width:0;overflow:hidden;overflow-wrap:anywhere}.d{color:var(--mut);font-variant-numeric:tabular-nums;font-size:.9rem;flex:none}
 .eq{display:none;gap:3px;align-items:flex-end;height:18px}.eq b{width:4px;background:var(--hot);border-radius:2px;height:30%}
 .playing .eq{display:flex}.playing .eq b{animation:eq .9s ease-in-out infinite alternate}.playing .eq b:nth-child(2){animation-delay:-.3s}.playing .eq b:nth-child(3){animation-delay:-.6s}.playing .eq b:nth-child(4){animation-delay:-.15s}
 @keyframes eq{0%{height:20%}100%{height:100%}}
 .np-tag{display:none;font:400 .8rem/1 var(--cond);letter-spacing:.1em;color:#160800;background:var(--hot);padding:4px 7px;border-radius:5px}
 [aria-current=true] .np-tag{display:inline-block}
+.share-btn{flex:none;align-self:stretch;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#1f1610,#160f0b);border:1px solid var(--line);color:var(--txt);border-radius:14px;padding:0 12px;min-width:64px;font:700 .78rem/1 var(--cond);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:border-color .15s,background .15s,color .15s,transform .15s}
+.share-btn:hover{border-color:var(--ember);background:var(--ember);color:#160800;transform:translateY(-2px)}
+#pshare{min-width:0;border-radius:10px;padding:0 14px}
 .chips{display:flex;flex-wrap:wrap;gap:10px}.chips a{background:var(--card);border:1px solid var(--line);color:var(--txt);text-decoration:none;padding:10px 18px;border-radius:99px;font-weight:700;transition:all .15s}.chips a:hover{border-color:var(--ember);background:var(--ember);color:#160800}
 .about{background:linear-gradient(135deg,#1e130c,#120c08);border:1px solid var(--line);border-left:4px solid var(--ember);border-radius:14px;padding:18px 20px}
 #shop{text-align:center}
 #player{position:fixed;left:0;right:0;bottom:0;z-index:9;background:linear-gradient(180deg,#1c120bf5,#0b0705fa);backdrop-filter:blur(12px);border-top:2px solid var(--ember);box-shadow:0 -10px 40px #ff5a1f33;padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
-.pi{max-width:820px;margin:auto;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;align-items:center}
-.pthumb{width:54px;height:41px;object-fit:contain;border-radius:6px;grid-row:span 2}
-.prow{display:flex;align-items:center;gap:10px;min-width:0}
+.pi{max-width:820px;margin:auto;display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"thumb title share" "thumb ctl ctl" "thumb seek seek";gap:4px 12px;align-items:center}
+.pthumb{width:54px;height:41px;object-fit:contain;border-radius:6px;grid-area:thumb}
+.prow{display:flex;align-items:center;gap:10px;min-width:0;grid-area:title}
 #nowlbl{font:400 .75rem/1 var(--cond);letter-spacing:.12em;color:var(--ember);text-transform:uppercase}
 #now{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;font-size:1.02rem;flex:1;min-width:0}
-.ctl{display:flex;gap:8px;align-items:center}
+.ctl{display:flex;gap:8px;align-items:center;grid-area:ctl}
 .ctl button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:16px;cursor:pointer;transition:transform .1s}
 .ctl button:active{transform:scale(.92)}
 .ctl #play{width:58px;height:58px;font-size:24px;border:0;color:#160800;background:radial-gradient(circle at 35% 30%,var(--hot),var(--ember) 60%,var(--red));box-shadow:0 0 22px #ff5a1f99}
-.srow{display:flex;align-items:center;gap:8px;grid-column:2}
+.srow{display:flex;align-items:center;gap:8px;grid-area:seek}
 #seek{flex:1;accent-color:var(--ember);height:6px}.tm{font-size:.8rem;color:var(--mut);font-variant-numeric:tabular-nums;white-space:nowrap}
+#pshare{grid-area:share;height:42px}
 footer{text-align:center;padding:40px 16px;color:var(--mut);font-size:.9rem}
-@media (min-width:640px){.pi{grid-template-columns:auto auto 1fr}.pthumb{grid-row:span 2}.ctl{grid-row:span 2}.srow{grid-column:3}}
-@media (max-width:639px){.ctl{grid-column:2}.pthumb{grid-row:span 3}}
+#sharemask{position:fixed;inset:0;z-index:20;background:#00000099;display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(18px + env(safe-area-inset-bottom));overflow:auto}
+#sharemenu{width:min(400px,100%);max-height:100%;overflow:auto;background:linear-gradient(180deg,#1f1610,#120c08);border:1px solid var(--line);border-radius:16px;padding:16px 14px 12px;box-shadow:0 20px 60px #000000aa}
+#sharemenu h3{margin:0 0 4px;font:400 1.45rem/1.1 var(--cond);text-transform:uppercase;letter-spacing:.03em;color:var(--hot)}
+#sharewho{margin:0 0 14px;color:var(--mut);font-size:.92rem}
+.share-links{display:grid;gap:8px}
+.share-links a,.share-links button,#shareclose{display:block;width:100%;text-align:center;text-decoration:none;background:var(--card);border:1px solid var(--line);color:var(--txt);padding:12px;border-radius:10px;font-weight:700;cursor:pointer;font:700 1rem/1.2 system-ui,sans-serif}
+.share-links a:hover,.share-links button:hover,#shareclose:hover{border-color:var(--ember);background:var(--ember);color:#160800}
+#shareclose{margin-top:10px;background:transparent}
+#toast{position:fixed;left:50%;bottom:130px;transform:translateX(-50%);z-index:30;background:var(--hot);color:#160800;font-weight:800;padding:10px 18px;border-radius:99px;box-shadow:0 8px 24px #0008}
+#tapplay{position:fixed;inset:0;z-index:15;background:#0b0705cc;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px)}
+#tapplay .btn{max-width:90vw;text-align:center}
+#sharemask[hidden],#toast[hidden],#tapplay[hidden],#pshare[hidden]{display:none!important}
+@media (min-width:640px){.pi{grid-template-columns:auto auto 1fr auto;grid-template-areas:"thumb ctl title share" "thumb ctl seek seek"}#pshare{align-self:center}#sharemask{align-items:center}}
+@media (max-width:639px){
+  main{padding:0 12px}
+  .t{font-size:.95rem}
+  .share-btn{padding:0 8px;min-width:52px}
+  #pshare{height:36px}
+  ol li .trk{padding:12px 10px;gap:8px}
+  .n{width:1.3em}
+  .eq,[aria-current=true] .np-tag{display:none}
+  .share-links a,.share-links button,#shareclose{padding:10px}
+}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before{animation:none!important}#embers{display:none}}
 </style></head><body>
 <div id="embers" aria-hidden="true"></div>
 <nav aria-label="Sections"><a href="#listen">Listen</a><a href="#about">About</a><a href="#social">Social</a><a href="#streaming" id="navStream" hidden>Streaming</a><a href="#shop">Shop</a></nav>
 <main>
 <header><img class="logo" src="logo.png" alt="Slot Grill logo" width="400" height="301"><h1>Fire Up The Music</h1><p class="tag">Original Slot Grill songs, made for cooking out and turning it up. Hit play and let them roll.</p></header>
-<section id="listen" aria-labelledby="hl"><h2 id="hl">The Playlist</h2><p class="mut">Tap a song to play, tap again to pause. Songs play one after another, and the music keeps going while you scroll or switch tabs.</p><ol id="list"></ol><p id="empty" class="mut" hidden>New songs are coming soon. Check back shortly.</p></section>
+<section id="listen" aria-labelledby="hl"><h2 id="hl">The Playlist</h2><p class="mut">Tap a song to play, tap again to pause. Songs play one after another, and the music keeps going while you scroll or switch tabs. Use Share to send a link that opens that song.</p><ol id="list"></ol><p id="empty" class="mut" hidden>New songs are coming soon. Check back shortly.</p></section>
 <section id="about"><h2>About</h2><div class="about"><p>These songs are made for Slot Grill, the carbon-steel flat pack grill. You'll hear some of them in Slot Grill videos on social media. Turn them up while the coals get going.</p></div></section>
 <section id="social"><h2>Follow Slot Grill</h2><div class="chips" id="soc"></div></section>
 <section id="streaming" hidden><h2>Streaming</h2><div class="chips" id="str"></div></section>
@@ -78,19 +105,41 @@ footer{text-align:center;padding:40px 16px;color:var(--mut);font-size:.9rem}
 </main>
 <div id="player" role="region" aria-label="Audio player"><div class="pi">
 <img class="pthumb" src="logo.png" alt="" width="54" height="41">
-<div class="ctl"><button id="prev" aria-label="Previous track">⏮</button><button id="play" aria-label="Play">▶</button><button id="next" aria-label="Next track">⏭</button></div>
+<div class="ctl"><button type="button" id="prev" aria-label="Previous track">⏮</button><button type="button" id="play" aria-label="Play">▶</button><button type="button" id="next" aria-label="Next track">⏭</button></div>
 <div class="prow"><div style="min-width:0;flex:1"><div id="nowlbl">Ready to play</div><div id="now">Pick a song</div></div></div>
+<button type="button" id="pshare" class="share-btn" aria-label="Share this song" hidden>Share</button>
 <div class="srow"><span class="tm" id="cur">0:00</span><input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Seek"><span class="tm" id="dur">0:00</span></div>
 </div></div>
+<div id="tapplay" hidden><button type="button" class="btn" id="tapplaybtn">Tap to play <span id="tapplayname"></span></button></div>
+<div id="sharemask" hidden>
+  <div id="sharemenu" role="dialog" aria-modal="true" aria-labelledby="sharettl">
+    <h3 id="sharettl">Share this song</h3>
+    <p id="sharewho"></p>
+    <div class="share-links">
+      <a id="sh-fb" target="_blank" rel="noopener">Facebook</a>
+      <a id="sh-x" target="_blank" rel="noopener">X</a>
+      <a id="sh-pin" target="_blank" rel="noopener">Pinterest</a>
+      <a id="sh-em">Email</a>
+      <button type="button" id="sh-copy">Copy link</button>
+    </div>
+    <button type="button" id="shareclose">Close</button>
+  </div>
+</div>
+<div id="toast" hidden>Copied</div>
 <audio id="a" preload="none"></audio>
 <script src="music-config.js"></script>
 <script>
 (function(){
 var A=document.getElementById('a'),list=document.getElementById('list'),T=[],i=-1,$=function(x){return document.getElementById(x)};
+var DISPLAY_OFFSET=30400;
 $('yr').textContent=new Date().getFullYear();
 function fmt(s){s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function comma(n){return String(n).replace(/\B(?=(\d{3})+(?!\d))/g,',')}
 function ext(a){a.target='_blank';a.rel='noopener'}
 function chip(box,x){var a=document.createElement('a');a.href=x.url;a.textContent=x.name;ext(a);box.appendChild(a)}
+function siteOrigin(){return (location.protocol==='http:'||location.protocol==='https:')?location.origin:'https://slotgrillmusic.com'}
+function shareUrl(t){return siteOrigin()+'/s/'+encodeURIComponent(t.id)+'/'}
+function playUrl(t){return siteOrigin()+'/?song='+encodeURIComponent(t.id)}
 fetch('config.json').then(function(r){return r.json()}).then(function(c){
  (c.social||[]).forEach(function(x){chip($('soc'),x)});
  var s=(c.streaming||[]).filter(function(x){return x.enabled&&x.url});
@@ -99,9 +148,14 @@ fetch('config.json').then(function(r){return r.json()}).then(function(c){
 function render(){list.innerHTML='';
  if(!T.length){$('empty').hidden=false;list.hidden=true;return}
  $('empty').hidden=true;list.hidden=false;
- T.forEach(function(t,k){var li=document.createElement('li'),b=document.createElement('button');
+ T.forEach(function(t,k){var li=document.createElement('li'),row=document.createElement('div'),b=document.createElement('button'),sh=document.createElement('button');
+  row.className='row';
+  b.type='button';b.className='trk';
   b.innerHTML='<span class="n">'+(k+1)+'</span><span class="ic">▶</span><span class="t"></span><span class="eq" aria-hidden="true"><b></b><b></b><b></b><b></b></span><span class="np-tag">Now playing</span><span class="d">'+(t.duration?fmt(t.duration):'')+'</span>';
-  b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};li.appendChild(b);list.appendChild(li)});}
+  b.querySelector('.t').textContent=t.title;b.onclick=function(){k===i?toggle():load(k,true)};
+  sh.type='button';sh.className='share-btn';sh.textContent='Share';sh.setAttribute('aria-label','Share '+t.title);
+  sh.onclick=function(e){e.preventDefault();e.stopPropagation();openShare(t)};
+  row.appendChild(b);row.appendChild(sh);li.appendChild(row);li.id='song-'+t.id;list.appendChild(li)});}
 function apply(all,ov){if(!ov){T=all.filter(function(t){return t.listed!==false});return render()}
  var by={};all.forEach(function(t){by[t.id]=t});T=[];
  function song(t){var title=ov.titles&&ov.titles[t.id];return title?Object.assign({},t,{title:title}):t}
@@ -113,18 +167,43 @@ function overrides(){var u=window.MUSIC_ENDPOINT;if(!u)return Promise.resolve(nu
   if(!j||!j.ok)return null;var k={},titles={};(j.listed||[]).concat(j.unlisted||[]).forEach(function(x){k[x]=1});
   var meta=j.meta||{};Object.keys(meta).forEach(function(id){if(meta[id]&&meta[id].title)titles[id]=meta[id].title});
   return {listed:j.listed||[],known:k,titles:titles}}).catch(function(){return null})}
-Promise.all([fetch('songs.json',{cache:'no-cache'}).then(function(r){return r.json()}),overrides()]).then(function(v){apply(v[0].songs||[],v[1])});
-function load(k,play){if(!T.length)return;i=(k+T.length)%T.length;var t=T[i];A.src=t.file;$('now').textContent=t.title;
- mark();
- if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:'Slot Grill',album:'Slot Grill Music',artwork:[{src:'icon-512.png',sizes:'512x512',type:'image/png'}]})}
+function wantedId(){
+  try{var q=new URLSearchParams(location.search).get('song');if(q)return q}catch(e){}
+  var h=(location.hash||'').replace(/^#/,'');
+  if(h.indexOf('song=')===0)return decodeURIComponent(h.slice(5));
+  return '';
+}
+function findSong(id){if(!id)return -1;for(var k=0;k<T.length;k++){if(T[k].id===id)return k}return -1}
+function showTap(t){$('tapplayname').textContent=t.title;$('tapplay').hidden=false;$('tapplaybtn').focus()}
+function hideTap(){$('tapplay').hidden=true}
+function attemptPlay(t){
+  var p=A.play();
+  function blocked(){showTap(t)}
+  if(p&&p.then)p.then(function(){hideTap()}).catch(blocked);
+  else setTimeout(function(){(A.paused?blocked():hideTap())},60);
+}
+function openWanted(){
+  var id=wantedId(),k=findSong(id);
+  if(k<0)return;
+  var el=document.getElementById('song-'+T[k].id);
+  if(el&&el.scrollIntoView)el.scrollIntoView({block:'center',behavior:'smooth'});
+  load(k,false);
+  attemptPlay(T[k]);
+}
+$('tapplaybtn').onclick=function(){hideTap();if(i>=0)A.play().catch(function(){showTap(T[i])})};
+Promise.all([fetch('songs.json',{cache:'no-cache'}).then(function(r){return r.json()}),overrides()]).then(function(v){apply(v[0].songs||[],v[1]);openWanted()});
+function load(k,play){if(!T.length)return;i=(k+T.length)%T.length;var t=T[i];A.src=t.file;$('now').textContent=t.title;$('pshare').hidden=false;
+ mark();hideTap();
+ if('mediaSession' in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t.title,artist:'Slot Grill',album:'Slot Grill Music',artwork:[{src:siteOrigin()+'/icon-512.png',sizes:'512x512',type:'image/png'}]})}
  document.title=t.title+' · Slot Grill Music';
- if(play)A.play().catch(function(){})}
-function toggle(){if(i<0)return load(0,true);A.paused?A.play().catch(function(){}):A.pause()}
+ if(play)attemptPlay(t)}
+function toggle(){if(i<0)return load(0,true);if(A.paused)attemptPlay(T[i]);else A.pause()}
 $('play').onclick=toggle;$('next').onclick=function(){load(i+1,true)};$('prev').onclick=function(){A.currentTime>3?A.currentTime=0:load(i-1,true)};
-function mark(){var on=!A.paused;[].forEach.call(list.querySelectorAll('button'),function(b,j){var c=j===i;b.setAttribute('aria-current',c);b.classList.toggle('playing',c&&on);
+$('pshare').onclick=function(){if(i>=0)openShare(T[i])};
+function mark(){var on=!A.paused;[].forEach.call(list.querySelectorAll('.trk'),function(b,j){var c=j===i;b.setAttribute('aria-current',c);b.classList.toggle('playing',c&&on);
   b.querySelector('.ic').textContent=c&&on?'⏸':'▶';b.setAttribute('aria-label',(c&&on?'Pause ':'Play ')+T[j].title)});
  $('nowlbl').textContent=i<0?'Ready to play':(on?'Now playing':'Paused')}
-A.onplay=function(){$('play').textContent='⏸';$('play').setAttribute('aria-label','Pause');mark()};
+A.onplay=function(){$('play').textContent='⏸';$('play').setAttribute('aria-label','Pause');hideTap();mark()};
 A.onpause=function(){$('play').textContent='▶';$('play').setAttribute('aria-label','Play');mark()};
 (function(){var E=document.getElementById('embers');if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  for(var n=0;n<22;n++){var e=document.createElement('i');e.style.left=Math.random()*100+'%';e.style.setProperty('--dx',(Math.random()*120-60)+'px');
@@ -137,10 +216,41 @@ if('mediaSession' in navigator){var m=navigator.mediaSession;
  m.setActionHandler('play',function(){toggle()});m.setActionHandler('pause',function(){A.pause()});
  m.setActionHandler('previoustrack',function(){load(i-1,true)});m.setActionHandler('nexttrack',function(){load(i+1,true)});
  try{m.setActionHandler('seekto',function(e){A.currentTime=e.seekTime})}catch(e){}}
-// visitor counter (same pattern as the guide sites)
+var shareT=null,toastTimer=null;
+function closeShare(){$('sharemask').hidden=true}
+function showToast(){$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(function(){$('toast').hidden=true},1600)}
+function copyText(url){
+  function fallback(){var n=document.createElement('input');n.value=url;n.setAttribute('readonly','');n.style.position='fixed';n.style.left='-9999px';document.body.appendChild(n);n.select();try{document.execCommand('copy');showToast()}catch(e){}document.body.removeChild(n)}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(showToast,fallback);else fallback();
+}
+function openMenu(t){
+  shareT=t;
+  var url=shareUrl(t),img=siteOrigin()+'/og.jpg';
+  var text='Listen to "'+t.title+'" by Slot Grill Music';
+  $('sharettl').textContent='Share this song';
+  $('sharewho').textContent=t.title+' · Slot Grill Music';
+  $('sh-fb').href='https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(url);
+  $('sh-x').href='https://x.com/intent/post?url='+encodeURIComponent(url)+'&text='+encodeURIComponent(text);
+  $('sh-pin').href='https://www.pinterest.com/pin/create/button/?url='+encodeURIComponent(url)+'&media='+encodeURIComponent(img)+'&description='+encodeURIComponent(text);
+  $('sh-em').href='mailto:?subject='+encodeURIComponent(t.title+' · Slot Grill Music')+'&body='+encodeURIComponent(text+'\n'+url);
+  $('sharemask').hidden=false;
+}
+function openShare(t){
+  var url=shareUrl(t),title=t.title+' · Slot Grill Music',text='Listen to "'+t.title+'" by Slot Grill Music';
+  if(navigator.share){
+    navigator.share({title:title,text:text,url:url}).catch(function(err){if(err&&err.name==='AbortError')return;openMenu(t)});
+    return;
+  }
+  openMenu(t);
+}
+$('sharemask').addEventListener('click',function(e){if(e.target===$('sharemask')||e.target===$('shareclose'))closeShare()});
+$('shareclose').onclick=function(){closeShare()};
+$('sh-copy').onclick=function(){if(shareT)copyText(shareUrl(shareT))};
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeShare();hideTap()}});
+// visitor counter: Goatcounter stores the real count; only the public label adds a display offset.
 var el=$('visitor'),url='https://slotgrillmusic.goatcounter.com/counter/%2F.json';
 function digits(v){return parseInt(String(v==null?'':v).replace(/\D/g,''),10)||0}
-function attempt(n){fetch(url).then(function(r){return r.ok?r.json():{}}).then(function(j){var c=digits(j.count);if(!c)throw 0;el.textContent='You are visitor #'+c+' to land here'})
+function attempt(n){fetch(url).then(function(r){return r.ok?r.json():{}}).then(function(j){var c=digits(j.count);if(!c)throw 0;el.textContent='You are visitor #'+comma(c+DISPLAY_OFFSET)+' to land here'})
  .catch(function(){if(n<2)setTimeout(function(){attempt(n+1)},1200);else el.textContent='Thanks for listening'})}
 setTimeout(function(){attempt(0)},1500);
 })();
